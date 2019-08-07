@@ -1,8 +1,10 @@
 const express = require('express');
 const logger = require('morgan');
+const passport = require('passport');
 const bodyParser = require('body-parser');
 const port = 3000;
 const users = require('./server/routes/api/users');
+require("dotenv").config()
 
 
 // Set up the express app
@@ -18,6 +20,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // Require our routes into the application.
 require('./server/routes')(app);
+// Create a passport middleware
+app.use(passport.initialize());
+// Passport Config 
+require('./config/passport')(passport);
 //  Use routes 
 app.use('/api/users', users);
 
