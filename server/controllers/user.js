@@ -36,9 +36,15 @@ export default class  UserController {
     static async verifyUser(req, res) {
         const token = req.params.token;
         const decoded = jwt_decode(token);
+        if (Date.now() >= decoded.exp * 1000) {
+            return res.status(403).json({
+                status: false,
+                message: 'Token has exprired please register again'
+            });
+        }
         const user = await models.User.findByPk(decoded.id, {
-               attributes: ['id'],
-           });
+            attributes: ['id'],
+        });
         try {
             if (!user) {
                 return res.status(404).send({
@@ -175,7 +181,7 @@ export default class  UserController {
                     //   })
                   });
 
-                //   res.status(201).send(user)
+                //  res.status(201).send(user)
              })
              .catch(error => res.status(400).send(error));
      }
