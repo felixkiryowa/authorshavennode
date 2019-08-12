@@ -1,31 +1,62 @@
-const { validationResult } = require('express-validator');
-const gravatar = require('gravatar');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const User = require('../models').User;
+import  { validationResult } from 'express-validator';
+import gravatar from 'gravatar';
+import  bcrypt  from 'bcryptjs';
+import  jwt  from 'jsonwebtoken';
+import  nodemailer from 'nodemailer';
+import jwt_decode from 'jwt-decode';
+import  models from '../models';
 
-module.exports = {
-    create(req, res) {
+export default class  UserController {
+    static async create(req, res) {
         const avarta = gravatar.url(req.body.email, {
             s: '200',
             r: 'pg',
             d: 'mm'
         });
-        User.findOne({
+        const user = await models.User.findOne({
             where: {
                 email: req.body.email
             }
-        }).then(user => {
-            if(user){
+        })
+        
+        try {
+            if (user) {
                 return res.status(404).send({
                     email: 'Email already exists',
                 });
             }
             handlePasswordHash(req, res, avarta);
-        })
-    },
+        } catch (error) {
+            return res.status(400).send({
+                error: error,
+            })
+        }
+    }
 
-    loginUser(req, res) {
+    static async verifyUser(req, res) {
+        const token = req.params.token;
+        const decoded = jwt_decode(token);
+        const user = await models.User.findByPk(decoded.id, {
+               attributes: ['id'],
+           });
+        try {
+            if (!user) {
+                return res.status(404).send({
+                    message: 'User Not Found',
+                });
+            }
+            user.update({
+                isVerified: true
+            });
+            res.status(200).json({
+                message: 'Account Successfully Verified'
+            });
+        } catch (error) {
+            console.log(error);
+        } 
+    }
+
+    static async loginUser(req, res) {
         //  Call catch Validation errors function
         try {
             const errors = validationResult(req);
@@ -41,32 +72,114 @@ module.exports = {
         const email = req.body.email;
         const password = req.body.password;
         //  Find the user by Email
-        User.findOne({
-            where: {
-                email
-            }
-        }).then(user => {
+        const user = await models.User.findOne({
+                where: {
+                    email
+                }
+            })
+
+        try {
             if (!user) {
-                 return res.status(404).json({
-                     email: 'User not found',
-                 });
-            }else if(!user.isVerified) {
+                return res.status(404).json({
+                    email: 'User not found',
+                });
+            } else if (!user.isVerified) {
                 return res.status(200).json({
                     msg: 'Please confirm your email to login'
                 })
             }
             // Check Password
-            bcrypt.compare(password, user.password)
-            .then(isMatch => {
-                checkPasswordMatch(user, res, isMatch);
-            });
-        })
-    }
-
-
+            const isMatch = await bcrypt.compare(password, user.password)
+            if (isMatch){
+               checkPasswordMatch(user, res, isMatch);
+            } 
+        } catch (error) {
+            
+        }
+    } 
     
- }
+     static async handleUserCreation(req, res, avarta) {
+         //  Call catch Validation errors function
+         try {
+             const errors = validationResult(req);
+             if (!errors.isEmpty()) {
+                 return res.status(400).json({
+                     errors: errors.array()
+                 });
+             }
+         } catch (error) {
+             return next(err)
+         }
+        const {
+             username,
+             email,
+             password
+         } = req.body;
 
+         return models.User
+             .create({
+                 username: username,
+                 email: email,
+                 avarta,
+                 password: password
+             })
+             .then(user => {
+                  // Create JWT payload
+                  const payload = {
+                      id: user.id,
+                      username: user.username,
+                      avarta: avarta,
+                      email: user.email,
+                  }
+                  // Generate the token or Sign Token
+                  jwt.sign(payload, process.env.SECRETKEY, {
+                      expiresIn: 3600
+                  }, (err, token) => {
+                      const link = `http://localhost:3000/api/users/verify-user-account/${token}`;
+
+                      const transporter = nodemailer.createTransport({
+                        service: 'gmail',
+                        auth: {
+                            user: 'franciskiryowa68@gmail.com',
+                            pass: 'kiryowa1993'
+                        }
+                      });
+
+                      const mailOptions = {
+                        from: 'franciskiryowa68@gmail.com',
+                        to: email,
+                        subject: 'Verify User Account From Authors Haven',
+                        text: 'That was easy!',
+                        html: `
+                            <h1>Welcome To Authors Haven</h1>
+                            <p>Click to verify account ${link} </p>
+                        `
+                      };
+
+                      transporter.sendMail(mailOptions, function (error, info) {
+                          if (error) {
+                              console.log(error);
+                          } else {
+                               res.json({
+                                   success: true,
+                                   message: 'Verification Email Has Been Successfully Sent'
+                               })
+                              console.log('Email sent: ' + info.response);
+                          }
+                      });
+
+
+                    //   res.json({
+                    //       success: true,
+                    //       token: 'Bearer ' + token
+                    //   })
+                  });
+
+                //   res.status(201).send(user)
+             })
+             .catch(error => res.status(400).send(error));
+     }
+ }
 
  const checkPasswordMatch = (user, res, isMatch) => {
     if (isMatch) {
@@ -98,32 +211,7 @@ module.exports = {
            bcrypt.hash(req.body.password, salt, (err, hash) => {
                if (err) throw err;
                req.body.password = hash;
-               handleUserCreation(req, res, avarta);
+               UserController.handleUserCreation(req, res, avarta);
            });
        })
- }
-
- const handleUserCreation = (req, res, avarta) => {
-    //  Call catch Validation errors function
-    try {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({
-                errors: errors.array()
-            });
-        }
-    } catch (error) {
-        return next(err)
-    }
-    const { username, email, password } = req.body;
-    return User
-        .create({
-            username: username,
-            email: email,
-            avarta,
-            password: password
-
-        })
-        .then(user => res.status(201).send(user))
-        .catch(error => res.status(400).send(error));
  }

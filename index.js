@@ -1,11 +1,11 @@
-const express = require('express');
-const logger = require('morgan');
-const passport = require('passport');
-const bodyParser = require('body-parser');
+import express from 'express';
+import logger from 'morgan';
+import passport from 'passport';
+import  bodyParser  from 'body-parser';
+import users from './server/routes/api/users';
 const port = 3000;
-const users = require('./server/routes/api/users');
-require("dotenv").config()
 
+require("dotenv").config()
 
 // Set up the express app
 const app = express();
@@ -32,4 +32,4 @@ app.get('/', (req, res) => res.status(200).send({
   message: 'Welcome to the beginning of nothingness.',
 }));
 
-module.exports = app;
+export default app;

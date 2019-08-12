@@ -1,10 +1,9 @@
-const { check, validationResult } = require('express-validator');
-const userController = require('../../controllers/user');
-const validateUserRegisteration = require('../../../validations/register');
-const validateUserLogin = require('../../../validations/login');
+import UserController from '../../controllers/user';
+import validateUserRegisteration from '../../../validations/register';
+import validateUserLogin from '../../../validations/login';
 
-const express = require('express');
-const passport = require('passport');
+import express from 'express';
+import  passport from 'passport';
 const router = express.Router();
 
 // @route GET /api/user/test
@@ -18,7 +17,7 @@ router.get('/test', (req, res) => res.json({ message: "Users Routes Works" }));
 
 router.post('/register',
     validateUserRegisteration.validate(),
-    userController.create
+    UserController.create
 );
 
 // @route POST /api/user/login
@@ -27,7 +26,15 @@ router.post('/register',
 
 router.post('/login', 
     validateUserLogin.validate(),
-    userController.loginUser
+    UserController.loginUser
+);
+
+// @route POST /api/user/verify-user-account
+// @desc Test register user
+// @access  Public
+
+router.get('/verify-user-account/:token',
+    UserController.verifyUser
 );
 
 // Test protected route
@@ -37,4 +44,4 @@ router.get('/current', passport.authenticate('jwt', { session: false }), (req, r
 
 
 
-module.exports = router;
+export default router;
