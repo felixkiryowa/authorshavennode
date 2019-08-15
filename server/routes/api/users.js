@@ -29,6 +29,24 @@ router.post('/login',
     UserController.loginUser
 );
 
+// @route POST /api/user/password-reset
+// @desc Test register user
+// @access  Public
+
+router.post('/password-reset',
+    validateUserRegisteration.validate(),
+    UserController.passwordReset
+);
+
+// @route POST /api/user/password-reset
+// @desc Test register user
+// @access  Public
+
+router.post('/password-reset-request/:token',
+    validateUserRegisteration.validate(),
+    UserController.passwordResetRequest
+);
+
 // @route POST /api/user/verify-user-account
 // @desc Test register user
 // @access  Public

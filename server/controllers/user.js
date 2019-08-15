@@ -5,6 +5,7 @@ import  jwt  from 'jsonwebtoken';
 import  nodemailer from 'nodemailer';
 import jwt_decode from 'jwt-decode';
 import  models from '../models';
+import { decode } from 'punycode';
 
 export default class  UserController {
     static async create(req, res) {
@@ -31,6 +32,107 @@ export default class  UserController {
                 error: error,
             })
         }
+    }
+
+    static async passwordResetRequest(req, res) {
+        const token = req.params.token;
+        const decoded = jwt_decode(token);
+        const { email, exp } = decoded;
+        const  { password } = req.body;
+        if (Date.now() >= exp * 1000) {
+            return res.status(403).json({
+                status: false,
+                message: 'Token has exprired please send password reset request again'
+            });
+        }
+         //  Find the user by Email
+         const user = await models.User.findOne({
+             where: {
+                email
+             }
+         });
+
+         try {
+             if (!user) {
+                 return res.status(404).json({
+                     email: 'User not found',
+                 });
+             }else {
+                  bcrypt.genSalt(10, (err, salt) => {
+                      bcrypt.hash(password, salt, (err, hash) => {
+                          if (err) throw err;
+                          const password = hash;
+                           user.update({
+                               password: password
+                           });
+                           res.status(200).json({
+                               message: 'Password Successfully Changed'
+                           });
+                          
+                      });
+                  });
+             }
+         } catch (error) {
+             console.log(error);
+         }
+
+    }
+
+    static async passwordReset(req, res) {
+        const userEmail = req.body.email;
+        const payload = {
+            email: userEmail,
+        }
+        // Generate the token or Sign Token
+        jwt.sign(payload, process.env.SECRETKEY, {
+                     expiresIn: 3600
+                 }, (err, token) => {
+            const link = `http://localhost:3000/api/users/password-reset-request/${token}`;
+
+            const transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                    user: 'franciskiryowa68@gmail.com',
+                    pass: 'kiryowa1993'
+                }
+            });
+
+            const mailOptions = {
+                from: 'franciskiryowa68@gmail.com',
+                to: userEmail,
+                subject: 'Password Reset',
+                html: `
+                        <h1 style = "color:#4E9CAF;">Reset Password </h1>
+                        <a href ='${link}'
+                        style="
+                            width: 130 px;
+                            height: 25 px;
+                            background: #4E9CAF;
+                            padding: 10px;
+                            text-align: center;
+                            border-radius: 5px;
+                            color: white;
+                            font-weight: bold;
+                            text-decoration:none;
+                        ">Reset password</a>
+                        <br>
+                        <br>
+                        `
+            };
+            transporter.sendMail(mailOptions, function (error, info) {
+                if (error) {
+                    console.log(error);
+                } else {
+                    res.json({
+                        success: true,
+                        message: 'Email Has Been Successfully Sent'
+                    })
+                    console.log('Email sent: ' + info.response);
+                }
+            });
+
+        });
+
     }
 
     static async verifyUser(req, res) {
@@ -82,7 +184,7 @@ export default class  UserController {
                 where: {
                     email
                 }
-            })
+            });
 
         try {
             if (!user) {
@@ -100,7 +202,7 @@ export default class  UserController {
                checkPasswordMatch(user, res, isMatch);
             } 
         } catch (error) {
-            
+            console.log(error);
         }
     } 
     
@@ -155,10 +257,22 @@ export default class  UserController {
                         from: 'franciskiryowa68@gmail.com',
                         to: email,
                         subject: 'Verify User Account From Authors Haven',
-                        text: 'That was easy!',
                         html: `
-                            <h1>Welcome To Authors Haven</h1>
-                            <p>Click to verify account ${link} </p>
+                            <h1 style = "color:#4E9CAF;" > Welcome To Authors Haven </h1>
+                            <a href ='${link}'
+                            style="
+                                width: 130 px;
+                                height: 25 px;
+                                background: #4E9CAF;
+                                padding: 10px;
+                                text-align: center;
+                                border-radius: 5px;
+                                color: white;
+                                font-weight: bold;
+                                text-decoration:none;
+                            ">Activate account</a>
+                            <br>
+                            <br>
                         `
                       };
 
@@ -173,15 +287,7 @@ export default class  UserController {
                               console.log('Email sent: ' + info.response);
                           }
                       });
-
-
-                    //   res.json({
-                    //       success: true,
-                    //       token: 'Bearer ' + token
-                    //   })
                   });
-
-                //  res.status(201).send(user)
              })
              .catch(error => res.status(400).send(error));
      }
@@ -219,5 +325,5 @@ export default class  UserController {
                req.body.password = hash;
                UserController.handleUserCreation(req, res, avarta);
            });
-       })
+       });
  }
