@@ -16,6 +16,8 @@
   "author": "Francis Kiryowa",
   "license": "MIT",
   "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
@@ -33,10 +35,9 @@
     "path": "^0.12.7",
     "pg": "^7.11.0",
     "pg-hstore": "^2.3.3",
-    "sequelize": "^5.10.0",
-    "validator": "^11.1.0",
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.7.0"
+    "sequelize": "^5.16.0",
+    "sequelize-cli": "^5.5.0",
+    "validator": "^11.1.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
