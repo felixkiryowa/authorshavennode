@@ -3,11 +3,13 @@
   "version": "1.0.0",
   "description": "Creating an API in node js",
   "main": "index.js",
-    "engines": {
-      "node": "10.x"
-    },
+  "engines": {
+    "node": "10.x"
+  },
   "scripts": {
-    "start": "node index.js",
+    "start": "npm run undomigration && npm run migration && babel-node index.js",
+    "migration": "babel-node node_modules/.bin/sequelize db:migrate",
+    "undomigration": "babel-node node_modules/.bin/sequelize db:migrate:undo:all",
     "start:dev": "nodemon ./node_modules/.bin/babel-node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -32,7 +34,9 @@
     "pg": "^7.11.0",
     "pg-hstore": "^2.3.3",
     "sequelize": "^5.10.0",
-    "validator": "^11.1.0"
+    "validator": "^11.1.0",
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

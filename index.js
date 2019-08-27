@@ -4,7 +4,7 @@ import passport from 'passport';
 import  bodyParser  from 'body-parser';
 import cors from 'cors';
 import users from './server/routes/api/users';
-const port = 3000;
+const port = 8000;
 
 require("dotenv").config()
 
