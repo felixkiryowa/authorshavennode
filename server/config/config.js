@@ -1,16 +1,20 @@
-{
+
+import dotenv from 'dotenv';
+dotenv.config();
+
+module.exports = {
   "development": {
-    "username": "postgres",
+    "username": process.env.DB_USER,
     "password": null,
-    "database": "authors_haven_node",
-    "host": "127.0.0.1",
+    "database": process.env.DB_NAME,
+    "host": process.env.DB_HOST,
     "dialect": "postgres"
   },
   "test": {
-    "username": "root",
+    "username": process.env.DB_USER,
     "password": null,
-    "database": "database_test",
-    "host": "127.0.0.1",
+    "database": process.env.DB_NAME_TEST,
+    "host": process.env.DB_HOST,
     "dialect": "postgres"
   },
   "production": {

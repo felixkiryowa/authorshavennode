@@ -29,6 +29,20 @@ router.post('/login',
     UserController.loginUser
 );
 
+// @route POST /api/user/oauth/facebook
+// @desc Test register user
+// @access  Public
+
+router.post('/oauth/facebook',
+    passport.authenticate('facebookToken', {
+        session: false
+    }),
+    UserController.facebookOAuth,
+);
+
+
+
+
 // @route POST /api/user/password-reset
 // @desc Test register user
 // @access  Public

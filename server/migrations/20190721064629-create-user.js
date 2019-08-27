@@ -3,21 +3,21 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('Users', {
       id: {
-        allowNull: false,
+        allowNull: true,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
       username: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.STRING
       },
       email: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.STRING
       },
       password: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.STRING
       },
       avarta: {
@@ -25,8 +25,6 @@ module.exports = {
       },
       isVerified:{
         type: Sequelize.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
       },
       createdAt: {
         allowNull: false,
