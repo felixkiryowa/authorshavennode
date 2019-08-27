@@ -2,6 +2,7 @@ import express from 'express';
 import logger from 'morgan';
 import passport from 'passport';
 import  bodyParser  from 'body-parser';
+import cors from 'cors';
 import users from './server/routes/api/users';
 const port = 3000;
 
@@ -13,6 +14,9 @@ app.listen(process.env.PORT ||  port, () => console.log(`Example app listening o
 
 // Log requests to the console.
 app.use(logger('dev'));
+
+// add cors
+app.use(cors());
 
 // Parse incoming requests data (https://github.com/expressjs/body-parser)
 app.use(bodyParser.json());
