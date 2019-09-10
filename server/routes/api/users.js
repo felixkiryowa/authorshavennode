@@ -6,6 +6,10 @@ import express from 'express';
 import  passport from 'passport';
 const router = express.Router();
 
+ router.get('/', (req, res) =>  {
+     res.render('index.ejs'); // load the index.ejs file
+ });
+
 // @route GET /api/user/test
 // @desc Test user route
 // @access  Public
@@ -39,6 +43,68 @@ router.post('/oauth/facebook',
     }),
     UserController.facebookOAuth,
 );
+
+// @route POST /api/user/oauth/twitter
+// @desc Test register user
+// @access  Public
+
+router.get('/auth/twitter',
+    passport.authenticate('twitter', {
+        session: false
+    }),
+    UserController.twitterOAuth,
+);
+
+// @route POST /api/user/oauth/twitter
+// @desc Test register user
+// @access  Public
+
+router.get('/auth/twitter/callback',
+    passport.authenticate('twitter', {
+        successRedirect: '/dashboard',
+        failureRedirect: '/'
+    })
+);
+
+// @route GET /api/user/oauth/google
+// @desc Test register user
+// @access  Private
+
+router.get('/auth/google',
+    passport.authenticate('googleToken', {
+        session: false,
+        scope: ['profile', 'email'],
+    }),
+    UserController.googleOAuth
+);
+
+// @route GET /api/user/auth/google/callback'
+// @desc Test register user
+// @access  Private
+router.get('/auth/google/callback',
+    passport.authenticate('googleToken', {
+        successRedirect: '/dashboard',
+        failureRedirect: '/'
+}));
+
+// @route GET /api/user/auth/facebook
+// @desc Test register user
+// @access  Private
+// route for facebook authentication and login
+router.get('/auth/facebook', passport.authenticate('facebookToken', {
+    scope: ['public_profile', 'email']
+}),
+ UserController.facebookOAuth
+);
+
+// handle the callback after facebook has authenticated the user
+router.get('/auth/facebook/callback',
+    passport.authenticate('facebookToken', {
+        successRedirect: '/dashboard',
+        failureRedirect: '/'
+    }));
+
+
 
 
 

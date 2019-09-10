@@ -4,7 +4,8 @@ import passport from 'passport';
 import  bodyParser  from 'body-parser';
 import cors from 'cors';
 import users from './server/routes/api/users';
-const port = 8000;
+var session = require('express-session');
+const port = 8080;
 
 require("dotenv").config()
 
@@ -26,6 +27,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 require('./server/routes')(app);
 // Create a passport middleware
 app.use(passport.initialize());
+app.use(session({
+  secret: 'SECRET',
+  resave: true,
+  saveUninitialized: true
+}));
 // Passport Config 
 require('./config/passport')(passport);
 //  Use routes 

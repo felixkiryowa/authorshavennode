@@ -5,7 +5,6 @@ import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
 import jwt_decode from 'jwt-decode';
 import models from '../models';
-import { decode } from 'punycode';
 
 export default class UserController {
 	static async create(req, res) {
@@ -34,9 +33,15 @@ export default class UserController {
 		}
 	}
 
-	static async facebookOAuth(req, res, next) {
-		// console.log('Got here.....');
-		const { id, username, avarta, email } = req.user;
+
+	static async googleOAuth(req, res) {
+		console.log('GOOGLE AUTH.......', req.user);
+		const {
+			id,
+			username,
+			avarta,
+			email
+		} = req.user;
 		const payload = {
 			id: id,
 			username: username,
@@ -46,8 +51,7 @@ export default class UserController {
 		// Generate the token or Sign Token
 		jwt.sign(
 			payload,
-			process.env.SECRETKEY,
-			{
+			process.env.SECRETKEY, {
 				expiresIn: 3600
 			},
 			(err, token) => {
@@ -58,6 +62,57 @@ export default class UserController {
 			}
 		);
 	}
+
+	static async twitterOAuth(req, res) {
+		console.log('TWITTER...AUTH.........', req.user);
+		const {
+			id,
+			username,
+		} = req.user;
+		const payload = {
+			id: id,
+			username: username,
+		};
+		// Generate the token or Sign Token
+		jwt.sign(
+			payload,
+			process.env.SECRETKEY, {
+				expiresIn: 3600
+			},
+			(err, token) => {
+				res.json({
+					success: true,
+					token: 'Bearer ' + token
+				});
+			}
+		);
+	}
+
+	static async facebookOAuth(req, res) {
+		console.log('FACEBOOK...AUTH.........', req.user);
+		const {
+			id,
+			username,
+		} = req.user;
+		const payload = {
+			id: id,
+			username: username,
+		};
+		// Generate the token or Sign Token
+		jwt.sign(
+			payload,
+			process.env.SECRETKEY, {
+				expiresIn: 3600
+			},
+			(err, token) => {
+				res.json({
+					success: true,
+					token: 'Bearer ' + token
+				});
+			}
+		);
+	}
+
 
 	static async passwordResetRequest(req, res) {
 		const token = req.params.token;

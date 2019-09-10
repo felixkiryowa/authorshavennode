@@ -8,8 +8,12 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      social_auth_id: {
+         allowNull: true,
+         type: Sequelize.STRING
+      },
       username: {
-        allowNull: true,
+        allowNull: false,
         type: Sequelize.STRING
       },
       email: {
@@ -24,6 +28,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       isVerified:{
+         allowNull: true,
         type: Sequelize.BOOLEAN,
       },
       createdAt: {
