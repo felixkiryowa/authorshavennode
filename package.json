@@ -52,8 +52,6 @@
     "validator": "^11.1.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
     "eslint": "^6.3.0",
