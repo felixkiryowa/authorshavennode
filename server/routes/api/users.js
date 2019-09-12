@@ -33,23 +33,12 @@ router.post('/login',
     UserController.loginUser
 );
 
-// @route POST /api/user/oauth/facebook
-// @desc Test register user
-// @access  Public
-
-router.post('/oauth/facebook',
-    passport.authenticate('facebookToken', {
-        session: false
-    }),
-    UserController.facebookOAuth,
-);
-
 // @route POST /api/user/oauth/twitter
 // @desc Test register user
 // @access  Public
 
 router.get('/auth/twitter',
-    passport.authenticate('twitter', {
+    passport.authenticate('twitterToken', {
         session: false
     }),
     UserController.twitterOAuth,
@@ -60,7 +49,7 @@ router.get('/auth/twitter',
 // @access  Public
 
 router.get('/auth/twitter/callback',
-    passport.authenticate('twitter', {
+    passport.authenticate('twitterToken', {
         successRedirect: '/dashboard',
         failureRedirect: '/'
     })
@@ -98,11 +87,11 @@ router.get('/auth/facebook', passport.authenticate('facebookToken', {
 );
 
 // handle the callback after facebook has authenticated the user
-router.get('/auth/facebook/callback',
-    passport.authenticate('facebookToken', {
-        successRedirect: '/dashboard',
-        failureRedirect: '/'
-    }));
+// router.get('/auth/facebook/callback',
+//     passport.authenticate('facebookToken', {
+//         successRedirect: '/dashboard',
+//         failureRedirect: '/'
+//     }));
 
 
 

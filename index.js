@@ -1,4 +1,7 @@
 import express from 'express';
+import error from './server/middlewares/error.middleware';
+import notfound from './server/middlewares/404.middleware';
+import winston from 'winston';
 import logger from 'morgan';
 import passport from 'passport';
 import  bodyParser  from 'body-parser';
@@ -11,7 +14,7 @@ require("dotenv").config()
 
 // Set up the express app
 const app = express();
-app.listen(process.env.PORT ||  port, () => console.log(`Example app listening on port ${port}!`));
+app.listen(process.env.PORT ||  port, () => winston.info(`Example app listening on port ${port}!`));
 
 // Log requests to the console.
 app.use(logger('dev'));
@@ -41,5 +44,8 @@ app.use('/api/users', users);
 app.get('/', (req, res) => res.status(200).send({
   message: 'Welcome to the beginning of nothingness.',
 }));
+
+app.use(notfound);
+app.use(error);
 
 export default app;

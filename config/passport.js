@@ -1,9 +1,15 @@
 import gravatar from 'gravatar';
+import jwt from 'jsonwebtoken';
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+// var GoogleStrategy =  require('passport-google-plus-token');
 var FacebookStrategy = require('passport-facebook').Strategy;
+// var FacebookStrategy = require('passport-facebook-token');
+
 var TwitterStrategy = require('passport-twitter').Strategy;
+// var TwitterStrategy = require('passport-twitter-token');
+
 const User = require('../server/models').User; 
 const opts = {}
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
@@ -28,6 +34,7 @@ module.exports = passport => {
         clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
         callbackURL: process.env.FACEBOOK_CALLBACK_URL
     }, async (accessToken, refreshToken, profile, done) => {
+        console.log('FACEBOOK PROFILE', profile);
         try {
             const existingUser = await User.findOne({
                 where: {
@@ -46,6 +53,7 @@ module.exports = passport => {
                 social_auth_id: profile.id,
                 username: profile.displayName,
             });
+            
             await newUser.save();
             done(null, newUser);
         } catch (error) {
@@ -65,11 +73,18 @@ module.exports = passport => {
                         social_auth_id: profile.id,
                     }
                 });
+                 const avarta = gravatar.url(profile.emails[0].value, {
+                     s: '200',
+                     r: 'pg',
+                     d: 'mm'
+                 });
                 if (existingUser) {
                     return done(null, existingUser);
                 }
                 const newUser = new User({
                     social_auth_id: profile.id,
+                    avarta,
+                    email: profile.emails[0].value,
                     username: profile.displayName,
                 });
                 await newUser.save();
@@ -108,6 +123,7 @@ module.exports = passport => {
                     username: profile.displayName,
                   });
                   await newUser.save();
+
                   done(null, newUser);
               } catch (error) {
                   done(error, false, error.message);
