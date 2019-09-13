@@ -3,7 +3,8 @@ import validateUserRegisteration from '../../../validations/register';
 import validateUserLogin from '../../../validations/login';
 
 import express from 'express';
-import  passport from 'passport';
+import  passport from '../../../config/passport';
+import Social from '../../controllers/social';
 const router = express.Router();
 
  router.get('/', (req, res) =>  {
@@ -80,11 +81,20 @@ router.get('/auth/google/callback',
 // @desc Test register user
 // @access  Private
 // route for facebook authentication and login
-router.get('/auth/facebook', passport.authenticate('facebookToken', {
-    scope: ['public_profile', 'email']
-}),
- UserController.facebookOAuth
-);
+// router.get('/auth/facebook', passport.authenticate('facebookToken', {
+//     scope: ['public_profile', 'email']
+// }),
+//  UserController.facebookOAuth
+// );
+router.get('/auth/facebook', passport.authenticate('facebook', {
+    scope: ['public_profile',
+        'email'
+    ]
+}));
+router.get('/auth/facebook/callback', passport.authenticate('facebook', {
+    session: false,
+
+}), Social.login);
 
 // handle the callback after facebook has authenticated the user
 // router.get('/auth/facebook/callback',

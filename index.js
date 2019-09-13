@@ -36,7 +36,7 @@ app.use(session({
   saveUninitialized: true
 }));
 // Passport Config 
-require('./config/passport')(passport);
+// require('./config/passport')(passport);
 //  Use routes 
 app.use('/api/users', users);
 
