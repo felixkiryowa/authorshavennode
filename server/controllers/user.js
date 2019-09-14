@@ -21,8 +21,8 @@ export default class UserController {
 
 		try {
 			if (user) {
-				return res.status(404).send({
-					email: 'Email already exists'
+				return res.status(409).send({
+					email: 'Email already exists',
 				});
 			}
 			handlePasswordHash(req, res, avarta);
@@ -361,7 +361,7 @@ export default class UserController {
 							if (error) {
 								console.log(error);
 							} else {
-								res.json({
+								res.status(201).json({
 									success: true,
 									message: 'Verification Email Has Been Successfully Sent'
 								});

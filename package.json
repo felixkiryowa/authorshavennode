@@ -11,7 +11,7 @@
     "migration": "babel-node node_modules/.bin/sequelize db:migrate",
     "undomigration": "babel-node node_modules/.bin/sequelize db:migrate:undo:all",
     "start:dev": "nodemon ./node_modules/.bin/babel-node index.js",
-    "test": "export NODE_ENV=test && npm run undomigration && npm run migration && nyc --reporter=html --reporter=text mocha ./test --exit --require @babel/register"
+    "test": "export NODE_ENV=test && npm run undomigration && npm run migration && nyc --reporter=html --reporter=text mocha --timeout 30000 ./test --exit --require @babel/register"
   },
   "author": "Francis Kiryowa",
   "license": "MIT",
@@ -33,6 +33,7 @@
     "express-session": "^1.16.2",
     "express-validator": "^6.1.1",
     "gravatar": "^1.8.0",
+    "install": "^0.13.0",
     "jsonwebtoken": "^8.5.1",
     "jwt-decode": "^2.2.0",
     "morgan": "^1.9.1",
@@ -41,15 +42,18 @@
     "passport-facebook": "^3.0.0",
     "passport-facebook-token": "^3.3.0",
     "passport-google-oauth": "^2.0.0",
+    "passport-google-plus-token": "^2.1.0",
     "passport-jwt": "^4.0.0",
     "passport-twitter": "^1.0.4",
+    "passport-twitter-token": "^1.3.0",
     "path": "^0.12.7",
     "pg": "^7.11.0",
     "pg-hstore": "^2.3.3",
     "prettier": "^1.18.2",
     "sequelize": "^5.16.0",
     "sequelize-cli": "^5.5.0",
-    "validator": "^11.1.0"
+    "validator": "^11.1.0",
+    "winston": "^3.2.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.6.0",
