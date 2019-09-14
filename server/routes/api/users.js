@@ -38,70 +38,48 @@ router.post('/login',
 // @desc Test register user
 // @access  Public
 
-router.get('/auth/twitter',
-    passport.authenticate('twitterToken', {
-        session: false
-    }),
-    UserController.twitterOAuth,
-);
+router.get('/auth/twitter', passport.authenticate('twitter', {
+    scope: ['email', 'profile']
+}));
 
 // @route POST /api/user/oauth/twitter
 // @desc Test register user
 // @access  Public
 
 router.get('/auth/twitter/callback',
-    passport.authenticate('twitterToken', {
-        successRedirect: '/dashboard',
-        failureRedirect: '/'
-    })
-);
+  passport.authenticate('twitter', { session: false, failureRedirect: '/login' }),
+  Social.login);
 
 // @route GET /api/user/oauth/google
 // @desc Test register user
 // @access  Private
 
-router.get('/auth/google',
-    passport.authenticate('googleToken', {
-        session: false,
-        scope: ['profile', 'email'],
-    }),
-    UserController.googleOAuth
-);
+router.get('/auth/google', passport.authenticate('google', {
+    scope: ['profile', 'email']
+}));
 
 // @route GET /api/user/auth/google/callback'
 // @desc Test register user
 // @access  Private
-router.get('/auth/google/callback',
-    passport.authenticate('googleToken', {
-        successRedirect: '/dashboard',
-        failureRedirect: '/'
-}));
+
+router.get('/auth/google/callback', passport.authenticate('google', {
+    session: false
+}), Social.login);
 
 // @route GET /api/user/auth/facebook
 // @desc Test register user
 // @access  Private
 // route for facebook authentication and login
-// router.get('/auth/facebook', passport.authenticate('facebookToken', {
-//     scope: ['public_profile', 'email']
-// }),
-//  UserController.facebookOAuth
-// );
 router.get('/auth/facebook', passport.authenticate('facebook', {
     scope: ['public_profile',
         'email'
     ]
 }));
-router.get('/auth/facebook/callback', passport.authenticate('facebook', {
-    session: false,
-
-}), Social.login);
 
 // handle the callback after facebook has authenticated the user
-// router.get('/auth/facebook/callback',
-//     passport.authenticate('facebookToken', {
-//         successRedirect: '/dashboard',
-//         failureRedirect: '/'
-//     }));
+router.get('/auth/facebook/callback', passport.authenticate('facebook', {
+    session: false,
+}), Social.login);
 
 
 

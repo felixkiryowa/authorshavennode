@@ -51,6 +51,18 @@ class Helper {
           );
     }
 
+     /**
+      * Handle Error
+      * @param {object} error
+      * @param {string} res
+      * @returns {string} token
+      */
+     static handleErrors(res, error) {
+         res.status(500).json({
+             message: error.message
+         });
+     }
+
     /**
      * verifyToken
      * @param {string} token

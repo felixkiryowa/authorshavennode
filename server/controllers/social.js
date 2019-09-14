@@ -22,49 +22,19 @@ class Social {
      * @memberof Social
      */
     static  login(req, res) {
-        console.log('LOGIN USER .......', req.user);
+        console.log('GIVEN USER....', req.user);
         data = req.user;
         if(data.provider === 'facebook'){
             console.log('WE ARE IN FACEBOOK....');
             SocialAuthHelper.handleFacebookLogin(data, req, res)
 
         }else if(data.provider === 'twitter') {
+            console.log('WE ARE IN TWITTER....');
             SocialAuthHelper.handleTwitterLogin(data, req, res);
         }else {
+            console.log('WE ARE IN GOOGLE....');
             SocialAuthHelper.handleGoogleLogin(data, req, res);
         }
-        // const firstname = data.name ? data.name.givenName : data.displayName.split(' ')[0];
-        // const lastname = data.name ? data.name.middleName : data.displayName.split(' ')[1];
-        // const email = data.emails ? data.emails[0].value : '';
-        // const username = `${firstname}.${lastname}`;
-        // check if user is in db
-        // const registeredUser = await User.findOne(email, username);
-        // format response message for case of twitter user without email add and others with
-        // const message = data.emails ? `account with name ${firstname} ${lastname} does not exist, create?` :
-        //     `account with name ${firstname} ${lastname} does not exist, to register send email in response`;
-        // if yes user exists, generate token
-        // if (registeredUser) {
-        //     const payload = {
-        //         email,
-        //         role: registeredUser.role,
-        //         verified: registeredUser.verified
-        //     };
-        //     const token = Helper.generateToken(payload);
-        //     return res.status(200).json({
-        //         status: 200,
-        //         message: 'Logged in successfully',
-        //         data: {
-        //             firstname,
-        //             lastname,
-        //             username,
-        //             email
-        //         },
-        //         token
-        //     });
-        // }
-        // res.status(200).json({
-        //     message
-        // });
     }
 
     /**
