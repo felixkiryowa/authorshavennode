@@ -20,7 +20,7 @@ router.get('/test', (req, res) => res.json({ message: "Users Routes Works" }));
 // @desc Test register user
 // @access  Public
 
-router.post('/register',
+router.post('/auth/register',
     validateUserRegisteration.validate(),
     UserController.create
 );
@@ -29,7 +29,7 @@ router.post('/register',
 // @desc Test register user
 // @access  Public
 
-router.post('/login', 
+router.post('/auth/login', 
     validateUserLogin.validate(),
     UserController.loginUser
 );
@@ -90,7 +90,7 @@ router.get('/auth/facebook/callback', passport.authenticate('facebook', {
 // @desc Test register user
 // @access  Public
 
-router.post('/password-reset',
+router.post('/auth/password-reset',
     validateUserRegisteration.validate(),
     UserController.passwordReset
 );
@@ -99,7 +99,7 @@ router.post('/password-reset',
 // @desc Test register user
 // @access  Public
 
-router.post('/password-reset-request/:token',
+router.post('/auth/password-reset-request/:token',
     validateUserRegisteration.validate(),
     UserController.passwordResetRequest
 );
@@ -108,7 +108,7 @@ router.post('/password-reset-request/:token',
 // @desc Test register user
 // @access  Public
 
-router.get('/verify-user-account/:token',
+router.get('/auth/verify-user-account/:token',
     UserController.verifyUser
 );
 

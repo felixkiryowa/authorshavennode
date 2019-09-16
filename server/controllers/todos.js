@@ -89,7 +89,6 @@ module.exports = {
                 }],
             })
             .then(todo => {
-                console.log('MY TODO', todo);
                 if (!todo) {
                     return res.status(400).send({
                         message: 'Todo Not Found',
