@@ -35,7 +35,7 @@ export default class UserController {
 
 
 	static async googleOAuth(req, res) {
-		console.log('GOOGLE AUTH.......', req.user);
+		// console.log('GOOGLE AUTH.......', req.user);
 		const {
 			id,
 			username,
@@ -64,7 +64,7 @@ export default class UserController {
 	}
 
 	static async twitterOAuth(req, res) {
-		console.log('TWITTER...AUTH.........', req.user);
+		// console.log('TWITTER...AUTH.........', req.user);
 		const {
 			id,
 			username,
@@ -89,7 +89,7 @@ export default class UserController {
 	}
 
 	static async facebookOAuth(req, res) {
-		console.log('FACEBOOK...AUTH.........', req.user);
+		// console.log('FACEBOOK...AUTH.........', req.user);
 		const {
 			id,
 			username,

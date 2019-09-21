@@ -26,6 +26,7 @@
     "babel-preset-env": "^1.7.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
+    "chai-spies": "^1.0.0",
     "cors": "^2.8.5",
     "dotenv": "^8.0.0",
     "ejs": "^2.7.1",
@@ -52,6 +53,7 @@
     "prettier": "^1.18.2",
     "sequelize": "^5.16.0",
     "sequelize-cli": "^5.5.0",
+    "sinon": "^7.4.2",
     "validator": "^11.1.0",
     "winston": "^3.2.1"
   },
