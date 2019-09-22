@@ -11,7 +11,11 @@
     "migration": "babel-node node_modules/.bin/sequelize db:migrate",
     "undomigration": "babel-node node_modules/.bin/sequelize db:migrate:undo:all",
     "start:dev": "nodemon ./node_modules/.bin/babel-node index.js",
-    "test": "export NODE_ENV=test && npm run undomigration && npm run migration && nyc --reporter=html --reporter=text mocha --timeout 30000 ./test --exit --require @babel/register"
+    "test": "export NODE_ENV=test && npm run undomigration && npm run migration && nyc --reporter=html --reporter=text mocha --timeout 30000 ./test --exit --require @babel/register",
+    "generate-lcov": "nyc report --reporter=text-lcov > lcov.info",
+    "coveralls": "nyc report --reporter=text-lcov | coveralls",
+    "codeclimate-coverage": "codeclimate-test-reporter < lcov.info",
+    "coverage": "nyc npm test && npm run generate-lcov && npm run coveralls-coverage && npm run codeclimate-coverage"
   },
   "author": "Francis Kiryowa",
   "license": "MIT",
@@ -26,6 +30,7 @@
     "babel-preset-env": "^1.7.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
+    "chai-spies": "^1.0.0",
     "cors": "^2.8.5",
     "dotenv": "^8.0.0",
     "ejs": "^2.7.1",
@@ -52,6 +57,7 @@
     "prettier": "^1.18.2",
     "sequelize": "^5.16.0",
     "sequelize-cli": "^5.5.0",
+    "sinon": "^7.4.2",
     "validator": "^11.1.0",
     "winston": "^3.2.1"
   },
@@ -61,6 +67,7 @@
     "@babel/preset-env": "^7.6.0",
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
+    "coveralls": "^3.0.6",
     "eslint": "^6.3.0",
     "mocha": "^6.2.0",
     "nodemon": "^1.19.2",

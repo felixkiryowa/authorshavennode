@@ -22,17 +22,14 @@ class Social {
      * @memberof Social
      */
     static  login(req, res) {
-        console.log('GIVEN USER....', req.user);
+        // console.log('GIVEN USER....', req.user);
         data = req.user;
         if(data.provider === 'facebook'){
-            console.log('WE ARE IN FACEBOOK....');
             SocialAuthHelper.handleFacebookLogin(data, req, res)
 
         }else if(data.provider === 'twitter') {
-            console.log('WE ARE IN TWITTER....');
             SocialAuthHelper.handleTwitterLogin(data, req, res);
         }else {
-            console.log('WE ARE IN GOOGLE....');
             SocialAuthHelper.handleGoogleLogin(data, req, res);
         }
     }

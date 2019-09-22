@@ -8,28 +8,8 @@ env.config();
  *
  * @class Helper
  */
-class Helper {
-    /**
-     * Hash Password Method
-     * @param {string} password
-     * @returns {string} returns hashed password
-     */
-    static hashPassword(password) {
-        const salt = bcrypt.genSalt(10);
-        const hash = bcrypt.hashSync(password, salt);
-        return hash;
-    }
-
-    /**
-     * comparePassword
-     * @param {string} hashPassword
-     * @param {string} password
-     * @returns {Boolean} return True or False
-     */
-    static comparePassword(hashPassword, password) {
-        return bcrypt.compareSync(password, hashPassword);
-    }
-
+export default class Helper {
+   
     /**
      * Generate Token
      * @param {string} payload
@@ -43,7 +23,7 @@ class Helper {
                   expiresIn: 3600
               },
               (err, token) => {
-                return res.json({
+                return res.status(200).json({
                       success: true,
                       token: 'Bearer ' + token
                   });
@@ -63,19 +43,6 @@ class Helper {
          });
      }
 
-    /**
-     * verifyToken
-     * @param {string} token
-     * @returns {Boolean} return True or False
-     */
-    static verifyToken(token) {
-        try {
-            const decode = jwt.verify(token, process.env.SECRET_KEY);
-            return decode;
-        } catch (error) {
-            return error.message;
-        }
-    }
 
     /**
      *
@@ -108,5 +75,9 @@ class Helper {
         const formatedReadTime = `${readTime} min read`;
         return formatedReadTime;
     }
+
+    static testFunction(a, b){
+        return a + b ;
+    }
 }
-export default Helper;
+
