@@ -11,7 +11,11 @@
     "migration": "babel-node node_modules/.bin/sequelize db:migrate",
     "undomigration": "babel-node node_modules/.bin/sequelize db:migrate:undo:all",
     "start:dev": "nodemon ./node_modules/.bin/babel-node index.js",
-    "test": "export NODE_ENV=test && npm run undomigration && npm run migration && nyc --reporter=html --reporter=text mocha --timeout 30000 ./test --exit --require @babel/register"
+    "test": "export NODE_ENV=test && npm run undomigration && npm run migration && nyc --reporter=html --reporter=text mocha --timeout 30000 ./test --exit --require @babel/register",
+    "generate-lcov": "nyc report --reporter=text-lcov > lcov.info",
+    "coveralls": "nyc report --reporter=text-lcov | coveralls",
+    "codeclimate-coverage": "codeclimate-test-reporter < lcov.info",
+    "coverage": "nyc npm test && npm run generate-lcov && npm run coveralls-coverage && npm run codeclimate-coverage"
   },
   "author": "Francis Kiryowa",
   "license": "MIT",
@@ -63,6 +67,7 @@
     "@babel/preset-env": "^7.6.0",
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
+    "coveralls": "^3.0.6",
     "eslint": "^6.3.0",
     "mocha": "^6.2.0",
     "nodemon": "^1.19.2",

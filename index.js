@@ -6,11 +6,12 @@ import logger from 'morgan';
 import passport from 'passport';
 import  bodyParser  from 'body-parser';
 import cors from 'cors';
+import env from 'dotenv';
 import users from './server/routes/api/users';
 var session = require('express-session');
 const port = 8080;
 
-require("dotenv").config()
+env.config();
 
 // Set up the express app
 const app = express();

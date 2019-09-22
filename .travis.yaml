@@ -22,6 +22,9 @@ before_script:
 
 script:
   - npm test
+  - npm run start
+  - npm install -g sequelize-cli
+  - sequelize db:migrate
 
 after_success:
   - npm run coveralls
