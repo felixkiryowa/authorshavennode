@@ -19,12 +19,12 @@ env:
 
 before_script:
   - psql -c 'create database authorsheaven_test;' -U postgres
-
-script:
-  - npm test
   - npm run start
   - npm install -g sequelize-cli
   - sequelize db:migrate
+
+script:
+  - npm test
 
 after_success:
   - npm run coveralls
