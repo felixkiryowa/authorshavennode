@@ -11,7 +11,7 @@
     "migration": "babel-node node_modules/.bin/sequelize db:migrate",
     "undomigration": "babel-node node_modules/.bin/sequelize db:migrate:undo:all",
     "start:dev": "nodemon ./node_modules/.bin/babel-node index.js",
-    "test": "export NODE_ENV=test && npm run undomigration && npm run migration && nyc --reporter=html --reporter=text mocha --timeout 30000 ./test --exit --require @babel/register",
+    "test": "export NODE_ENV=test && npm run undomigration && npm run migration && nyc --reporter=html --reporter=text mocha --timeout 50000 ./test --exit --require @babel/register",
     "generate-lcov": "nyc report --reporter=text-lcov > lcov.info",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
     "codeclimate-coverage": "codeclimate-test-reporter < lcov.info",
