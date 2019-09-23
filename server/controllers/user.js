@@ -97,7 +97,7 @@ export default class UserController {
 					service: 'gmail',
 					auth: {
 						user: 'franciskiryowa68@gmail.com',
-						pass: 'kiryowa1993'
+						pass: 'kiryowa@1993'
 					}
 				});
 
@@ -226,7 +226,7 @@ export default class UserController {
 				});
 			}
 		} catch (error) {
-			return next(err);
+			return next(error);
 		}
 		const { username, email, password } = req.body;
 
@@ -235,6 +235,7 @@ export default class UserController {
 				username: username,
 				email: email,
 				avarta,
+				isVerified: false,
 				password: password
 			})
 			.then((user) => {
@@ -259,7 +260,7 @@ export default class UserController {
 							service: 'gmail',
 							auth: {
 								user: 'franciskiryowa68@gmail.com',
-								pass: 'kiryowa1993'
+								pass: 'kiryowa@1993'
 							}
 						});
 

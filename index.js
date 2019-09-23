@@ -9,7 +9,7 @@ import cors from 'cors';
 import env from 'dotenv';
 import users from './server/routes/api/users';
 var session = require('express-session');
-const port = 8080;
+const port = 3000;
 
 env.config();
 
