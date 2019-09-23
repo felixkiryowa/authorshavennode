@@ -34,7 +34,7 @@ describe('test index', () => {
             .post('/api/users/register')
             .send({
               	username: "kiryowa22",
-              	email: "francis.kiryowa@andela.com",
+              	email: "daddyfelix56@gmail.com",
               	password: "kiryowa@1993"
             })
             .set('Accept', 'Application/JSON')
@@ -52,7 +52,7 @@ describe('test index', () => {
             .post('/api/users/register')
             .send({
                 username: "kiryowa22",
-                email: "francis.kiryowa@andela.com",
+                email: "daddyfelix56@gmail.com",
                 password: "kiryowa@1993"
             })
             .end((error, res) => {
