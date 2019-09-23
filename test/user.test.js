@@ -68,7 +68,6 @@ describe('test index', () => {
         .request(app)
         .get(`/api/users/auth/${userToken}`)
         .end((error, res) => {
-            console.log('RES.....', error);
             expect(res.status).to.be.equal(404);
             expect(res.body).to.have.deep.property('error', 'Resource not found');
             done();
