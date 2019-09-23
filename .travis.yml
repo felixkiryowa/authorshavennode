@@ -1,7 +1,7 @@
 language: node_js
 
 node_js:
-  - 'stable'
+  - "10.16.0"
 
 cache:
   directories:
@@ -22,9 +22,7 @@ before_script:
 
 script:
   - npm test
-  - npm run start
-  - npm install -g sequelize-cli
-  - sequelize db:migrate
 
 after_success:
+  - npm run coveralls
   - npm run coverage

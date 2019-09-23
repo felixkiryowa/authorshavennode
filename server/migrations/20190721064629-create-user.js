@@ -28,8 +28,9 @@ module.exports = {
         type: Sequelize.STRING
       },
       isVerified:{
-         allowNull: true,
+        allowNull: false,
         type: Sequelize.BOOLEAN,
+        defaultValue: false
       },
       createdAt: {
         allowNull: false,

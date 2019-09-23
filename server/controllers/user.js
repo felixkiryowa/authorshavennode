@@ -33,87 +33,6 @@ export default class UserController {
 		}
 	}
 
-
-	static async googleOAuth(req, res) {
-		// console.log('GOOGLE AUTH.......', req.user);
-		const {
-			id,
-			username,
-			avarta,
-			email
-		} = req.user;
-		const payload = {
-			id: id,
-			username: username,
-			avarta: avarta,
-			email: email
-		};
-		// Generate the token or Sign Token
-		jwt.sign(
-			payload,
-			process.env.SECRETKEY, {
-				expiresIn: 3600
-			},
-			(err, token) => {
-				res.json({
-					success: true,
-					token: 'Bearer ' + token
-				});
-			}
-		);
-	}
-
-	static async twitterOAuth(req, res) {
-		// console.log('TWITTER...AUTH.........', req.user);
-		const {
-			id,
-			username,
-		} = req.user;
-		const payload = {
-			id: id,
-			username: username,
-		};
-		// Generate the token or Sign Token
-		jwt.sign(
-			payload,
-			process.env.SECRETKEY, {
-				expiresIn: 3600
-			},
-			(err, token) => {
-				res.json({
-					success: true,
-					token: 'Bearer ' + token
-				});
-			}
-		);
-	}
-
-	static async facebookOAuth(req, res) {
-		// console.log('FACEBOOK...AUTH.........', req.user);
-		const {
-			id,
-			username,
-		} = req.user;
-		const payload = {
-			id: id,
-			username: username,
-		};
-		// Generate the token or Sign Token
-		jwt.sign(
-			payload,
-			process.env.SECRETKEY, {
-				expiresIn: 3600
-			},
-			(err, token) => {
-				res.json({
-					success: true,
-					token: 'Bearer ' + token
-				});
-			}
-		);
-	}
-
-
 	static async passwordResetRequest(req, res) {
 		const token = req.params.token;
 		const decoded = jwt_decode(token);
@@ -146,13 +65,16 @@ export default class UserController {
 							password: password
 						});
 						res.status(200).json({
+							success: true,
 							message: 'Password Successfully Changed'
 						});
 					});
 				});
 			}
 		} catch (error) {
-			console.log(error);
+			res.status(404).json({
+				err: error.message
+			})
 		}
 	}
 
@@ -169,13 +91,13 @@ export default class UserController {
 				expiresIn: 3600
 			},
 			(err, token) => {
-				const link = `http://localhost:3000/api/users/password-reset-request/${token}`;
+				const link = `http://localhost:3000/api/users/auth/password-reset-request/${token}`;
 
 				const transporter = nodemailer.createTransport({
 					service: 'gmail',
 					auth: {
 						user: 'franciskiryowa68@gmail.com',
-						pass: 'kiryowa1993'
+						pass: 'kiryowa@1993'
 					}
 				});
 
@@ -203,13 +125,15 @@ export default class UserController {
 				};
 				transporter.sendMail(mailOptions, function(error, info) {
 					if (error) {
-						console.log(error);
+						res.status(404).json({
+							err: error.message,
+						});
 					} else {
 						res.json({
 							success: true,
+							userToken: token,
 							message: 'Email Has Been Successfully Sent'
 						});
-						console.log('Email sent: ' + info.response);
 					}
 				});
 			}
@@ -238,10 +162,13 @@ export default class UserController {
 				isVerified: true
 			});
 			res.status(200).json({
+				success: true,
 				message: 'Account Successfully Verified'
 			});
 		} catch (error) {
-			console.log(error);
+			res.status(404).json({
+				err: error.message
+			})
 		}
 	}
 
@@ -274,7 +201,7 @@ export default class UserController {
 				});
 			} else if (!user.isVerified) {
 				return res.status(200).json({
-					msg: 'Please confirm your email to login'
+					message: 'Please confirm your email to login'
 				});
 			}
 			// Check Password
@@ -283,7 +210,9 @@ export default class UserController {
 				checkPasswordMatch(user, res, isMatch);
 			}
 		} catch (error) {
-			console.log(error);
+			res.status(404).json({
+				err: error.message,
+			});
 		}
 	}
 
@@ -297,7 +226,7 @@ export default class UserController {
 				});
 			}
 		} catch (error) {
-			return next(err);
+			return next(error);
 		}
 		const { username, email, password } = req.body;
 
@@ -306,6 +235,7 @@ export default class UserController {
 				username: username,
 				email: email,
 				avarta,
+				isVerified: false,
 				password: password
 			})
 			.then((user) => {
@@ -324,13 +254,13 @@ export default class UserController {
 						expiresIn: 3600
 					},
 					(err, token) => {
-						const link = `http://localhost:3000/api/users/verify-user-account/${token}`;
+						const link = `http://localhost:8080/api/users/verify-user-account/${token}`;
 
 						const transporter = nodemailer.createTransport({
 							service: 'gmail',
 							auth: {
 								user: 'franciskiryowa68@gmail.com',
-								pass: 'kiryowa1993'
+								pass: 'kiryowa@1993'
 							}
 						});
 
@@ -359,13 +289,15 @@ export default class UserController {
 
 						transporter.sendMail(mailOptions, function(error, info) {
 							if (error) {
-								console.log(error);
+								res.status(404).json({
+									err: error.message,
+								});
 							} else {
 								res.status(201).json({
 									success: true,
+									userToken: token,
 									message: 'Verification Email Has Been Successfully Sent'
 								});
-								console.log('Email sent: ' + info.response);
 							}
 						});
 					}
