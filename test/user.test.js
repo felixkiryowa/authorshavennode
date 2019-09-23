@@ -151,7 +151,6 @@ describe('test index', () => {
             })
             .set('Accept', 'Application/JSON')
             .end((error, res) => {
-                console.log(res.body);
                 userToken = res.body.userToken;
                 expect(res.status).to.be.equal(404);
                 expect(res.body).to.have.deep.property('error', 'Resource not found');
