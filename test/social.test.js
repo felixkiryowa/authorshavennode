@@ -46,13 +46,4 @@ describe('Testing social authentication', () => {
                  done();
              });
      });
-
-    it('should login using with twitter', (done) => {
-        chai.request(app)
-            .get('/api/users/auth/google')
-            .end((err, res) => {
-                expect(res.status).to.be.equal(200);
-                done();
-            });
-    });
 });
