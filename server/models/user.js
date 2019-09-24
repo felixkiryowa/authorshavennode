@@ -2,6 +2,9 @@
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     social_auth_id: DataTypes.STRING,
+    firstname: DataTypes.STRING,
+    lastname: DataTypes.STRING,
+    bio: DataTypes.TEXT,
     username: DataTypes.STRING,
     email: DataTypes.STRING,
     password: DataTypes.STRING,

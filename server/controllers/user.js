@@ -132,7 +132,7 @@ export default class UserController {
 						res.json({
 							success: true,
 							userToken: token,
-							message: 'Email Has Been Successfully Sent'
+							message: 'Email Has Been Successfully Sent, Check your email'
 						});
 					}
 				});
@@ -254,7 +254,7 @@ export default class UserController {
 						expiresIn: 3600
 					},
 					(err, token) => {
-						const link = `http://localhost:8080/api/users/verify-user-account/${token}`;
+						const link = `http://localhost:8080/api/users/auth/verify-user-account/${token}`;
 
 						const transporter = nodemailer.createTransport({
 							service: 'gmail',

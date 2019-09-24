@@ -81,11 +81,6 @@ router.get('/auth/facebook/callback', passport.authenticate('facebook', {
     session: false,
 }), Social.login);
 
-
-
-
-
-
 // @route POST /api/user/password-reset
 // @desc Test register user
 // @access  Public
@@ -112,9 +107,17 @@ router.get('/auth/verify-user-account/:token',
     UserController.verifyUser
 );
 
+
 // Test protected route
 router.get('/current', passport.authenticate('jwt', { session: false }), (req, res) => {
-    res.json(req.user);
+    res.json({
+        firstname: req.user.firstname,
+        lastname: req.user.lastname,
+        bio:req.user.bio,
+        username: req.user.username,
+        email: req.user.email,
+        avarta: req.user.avarta
+    });
 });
 
 

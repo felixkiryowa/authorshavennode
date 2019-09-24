@@ -1,6 +1,6 @@
 # SendITReactChallenge4
 
-[![Build Status](https://travis-ci.org/felixkiryowa/authorshavennode.svg?branch=master)](https://travis-ci.org/felixkiryowa/authorshavennode)
+[![Build Status](https://travis-ci.org/felixkiryowa/authorshavennode.svg?branch=develop)](https://travis-ci.org/felixkiryowa/authorshavennode)
 
 [![Coverage Status](https://coveralls.io/repos/github/felixkiryowa/authorshavennode/badge.svg)](https://coveralls.io/github/felixkiryowa/authorshavennode)
 
