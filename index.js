@@ -8,6 +8,7 @@ import  bodyParser  from 'body-parser';
 import cors from 'cors';
 import env from 'dotenv';
 import users from './server/routes/api/users';
+import profiles from './server/routes/api/profiles';
 var session = require('express-session');
 const port = 3000;
 
@@ -38,8 +39,10 @@ app.use(session({
 }));
 // Passport Config 
 // require('./config/passport')(passport);
-//  Use routes 
+//  User routes 
 app.use('/api/users', users);
+//  User Profile routes
+app.use('/api/profile', profiles);
 
 // Setup a default catch-all route that sends back a welcome message in JSON format.
 app.get('/', (req, res) => res.status(200).send({
