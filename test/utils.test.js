@@ -1,21 +1,29 @@
-// import chai from 'chai';
-// import app from '../index';
-// import Helper from '../server/helpers/helper.functions';
-// import Util from '../server/utils/utils';
-// const util = new Util();
+import chai from 'chai';
+import spies from 'chai-spies';
+import chaiHttp from 'chai-http';
+import sinon from 'sinon';
+import Util from '../server/utils/utils';
 
-// const {
-//     expect
-// } = chai;
+const util = new Util();
+chai.use(chaiHttp, spies);
+const {
+    expect
+} = chai;
 
-// describe('Testing utility functions', () => {
+describe('Testing utility functions', () => {
+    it('should test setSuccess', () => {
+        sinon.spy(Util, 'setSuccess');
+        Util.setSuccess(200, 'Successfully done something', {
+            name: 'francis',
+            age: 54
+        });
+        expect(Util.setSuccess.calledOnce).to.be.true;
+    });
 
-//      it('should test send method ', () => {
-//           const res = {
-//               status: 200
-//           }
-//          util.setSuccess(200, 'Successfully done something', {name: 'francis', age: 54});
-//          expect(util.send(res)).to.be.equal('hgjghjfhjgh');
-//      });
-    
-// });
+    it('should test setSuccess', () => {
+        sinon.spy(Util, 'setError');
+        Util.setError(400, 'An error has occured');
+        expect(Util.setError.calledOnce).to.be.true;
+    });
+
+});

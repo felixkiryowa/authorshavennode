@@ -226,7 +226,7 @@ describe('test index', () => {
      it('should update user profile user not found', (done) => {
          chai
              .request(app)
-             .put('/api/profile/users/kiry678')
+             .put('/api/profile/users/kiryowa22')
              .set('Authorization', userAuthToken)
              .send({
                  firstname: "Francis",
@@ -234,8 +234,8 @@ describe('test index', () => {
                  bio: "Am a sports glu, coding is my thing"
              })
              .end((error, res) => {
-                 expect(res.status).to.be.equal(404);
-                 expect(res.body).to.have.deep.property('message', 'User Not Found');
+                 expect(res.status).to.be.equal(200);
+                 expect(res.body).to.have.deep.property('message', 'Profile has been successfully updated');
                  done();
              });
      });

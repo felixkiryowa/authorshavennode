@@ -1,6 +1,6 @@
 import models from '../models';
 import Util from '../utils/utils';
-const util = new Util();
+// const util = new Util();
 
 export default class UserProfileController {
 
@@ -22,8 +22,8 @@ export default class UserProfileController {
         try {
            
             if (!profile) {
-                util.setError(404, 'User Not Found');
-                return util.send(res);
+                Util.setError(404, 'User Not Found');
+                return util.sendResponse(res);
             }else {
                 if (username === usernameFromToken) {
                 return profile.update({
@@ -31,17 +31,17 @@ export default class UserProfileController {
                         lastname: lastname || profile.lastname,
                         bio: bio || profile.bio
                     }).then(() => {
-                        util.setSuccess(200, 'Profile has been successfully updated', profile);
-                        return util.send(res);
+                        Util.setSuccess(200, 'Profile has been successfully updated', profile);
+                        return Util.sendResponse(res);
                     })
                 } else {
-                    util.setSuccess(200, 'You can not update a profile that does not belong to you', 'success');
-                    return util.send(res);
+                    Util.setSuccess(200, 'You can not update a profile that does not belong to you', 'success');
+                    return Util.sendResponse(res);
                 }
             }
         } catch (err) {
-            util.setError(400, err.message);
-            return util.send(res);
+            Util.setError(400, err.message);
+            return Util.sendResponse(res);
         }
     }
 
@@ -54,8 +54,8 @@ export default class UserProfileController {
                 }
             });
             if (!userProfile) {
-                util.setSuccess(200, 'User Not Found', 'success');
-                return util.send(res);
+                Util.setSuccess(200, 'User Not Found', 'success');
+                return Util.sendResponse(res);
             }else {
                 const specificUserProfile = {
                     firstname: userProfile.firstname,
@@ -65,12 +65,12 @@ export default class UserProfileController {
                     email: userProfile.email,
                     avarta: userProfile.avarta
                 }
-                util.setSuccess(200, `${userProfile.username} user profile`, specificUserProfile);
-                return util.send(res);
+                Util.setSuccess(200, `${userProfile.username} user profile`, specificUserProfile);
+                return Util.sendResponse(res);
             }
         } catch (error) {
-             util.setError(400, error.message);
-             return util.send(res);
+             Util.setError(400, error.message);
+             return Util.sendResponse(res);
         }
     }
 

@@ -6,20 +6,20 @@ export default class Util {
         this.message = null;
     }
 
-    setSuccess(statusCode, message, data) {
+    static async setSuccess(statusCode, message, data) {
         this.statusCode = statusCode;
         this.message = message;
         this.data = data;
         this.type = 'success';
     }
 
-    setError(statusCode, message) {
+    static async setError(statusCode, message) {
         this.statusCode = statusCode;
         this.message = message;
         this.type = 'error';
     }
 
-    send(res) {
+    static async sendResponse(res) {
         const result = {
             status: this.type,
             message: this.message,
