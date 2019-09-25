@@ -5,8 +5,6 @@
 [![Coverage Status](https://coveralls.io/repos/github/felixkiryowa/authorshavennode/badge.svg)](https://coveralls.io/github/felixkiryowa/authorshavennode)
 
  [![Maintainability](https://api.codeclimate.com/v1/badges/432fd9e3cf4940605422/maintainability)](https://codeclimate.com/github/felixkiryowa/authorshavennode/maintainability)
-
- [![Test Coverage](https://api.codeclimate.com/v1/badges/432fd9e3cf4940605422/test_coverage)](https://codeclimate.com/github/felixkiryowa/authorshavennode/test_coverage)
   
   Authors Haven - A Social platform for the creative at heart.
 =======
