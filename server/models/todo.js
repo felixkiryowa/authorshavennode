@@ -11,8 +11,7 @@ module.exports = (sequelize, DataTypes) => {
         as: 'todoItems',
         onDelete: 'CASCADE',
 
-    })
-    
+    });
   };
   return Todo;
 };

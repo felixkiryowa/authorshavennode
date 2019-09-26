@@ -1,13 +1,39 @@
 import models from '../models';
 import Util from '../utils/utils';
-// const util = new Util();
 
-export default class UserProfileController {
+export default class ArticlesController {
+    static async createArticle(req, res) {
+        const username = req.user.username;
+        const articleData = {
+            title,
+            description,
+            slug,
+            body,
+            author,
+            image
+        }
 
-    static async updateProfile(req, res) {
-         const {
-             username
-         } = req.params;
+        console.log('FILE.......', req.file);
+        console.log('USERNAME......', username);
+
+        // try {
+        //     const article = await models.Article.create({
+
+        //      });
+        //      if(article){
+        //          Util.setSuccess(200, 'Successfully created an article', article);
+        //          Util.sendResponse(res);
+        //      }  
+        // } catch (error) {
+        //     Util.setError(500, error.message);
+        //     Util.sendResponse(res);
+        // }
+    }
+
+    static async updateAnArticle(req, res) {
+        const {
+            username
+        } = req.params;
         const {
             firstname,
             lastname,
@@ -20,13 +46,13 @@ export default class UserProfileController {
             }
         });
         try {
-           
+
             if (!profile) {
                 Util.setError(404, 'User Not Found');
-                return Util.sendResponse(res);
-            }else {
+                return util.sendResponse(res);
+            } else {
                 if (username === usernameFromToken) {
-                return profile.update({
+                    return profile.update({
                         firstname: firstname || profile.firstname,
                         lastname: lastname || profile.lastname,
                         bio: bio || profile.bio
@@ -45,8 +71,10 @@ export default class UserProfileController {
         }
     }
 
-    static async getAUserProfile(req, res) {
-        const { username }  = req.params;
+    static async getAnArticle(req, res) {
+        const {
+            username
+        } = req.params;
         try {
             const userProfile = await models.User.findOne({
                 where: {
@@ -56,7 +84,7 @@ export default class UserProfileController {
             if (!userProfile) {
                 Util.setSuccess(200, 'User Not Found', 'success');
                 return Util.sendResponse(res);
-            }else {
+            } else {
                 const specificUserProfile = {
                     firstname: userProfile.firstname,
                     lastname: userProfile.lastname,
@@ -69,8 +97,8 @@ export default class UserProfileController {
                 return Util.sendResponse(res);
             }
         } catch (error) {
-             Util.setError(400, error.message);
-             return Util.sendResponse(res);
+            Util.setError(400, error.message);
+            return Util.sendResponse(res);
         }
     }
 

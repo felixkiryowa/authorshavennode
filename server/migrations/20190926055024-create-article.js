@@ -9,9 +9,32 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       title: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       description: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
+      slug: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
+      body: {
+        allowNull: false,
+        type: Sequelize.TEXT
+      },
+      author: {
+        type: Sequelize.STRING,
+          onDelete: 'CASCADE',
+          references: {
+            model: 'Users',
+            key: 'username',
+            as: 'author',
+          },
+      },
+      image: {
+        allowNull:true,
         type: Sequelize.STRING
       },
       createdAt: {
