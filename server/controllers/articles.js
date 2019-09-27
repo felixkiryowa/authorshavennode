@@ -1,33 +1,74 @@
 import models from '../models';
+import path from 'path';
+import cloudinary from 'cloudinary';
+import dotenv from 'dotenv';
+import  slugify from 'slugify';
 import Util from '../utils/utils';
+
+require('../utils/cloudinary');
+
+// dotenv.config();
+
+// const cloudinary = require('cloudinary').v2;
+// cloudinary.config({
+//   cloud_name: process.env.CLOUD_NAME,
+//   api_key: process.env.API_KEY,
+//   api_secret: process.env.API_SECRET
+// })
 
 export default class ArticlesController {
     static async createArticle(req, res) {
-        const username = req.user.username;
+        const fileExtension = path.extname(req.file.originalname);
+        const { username }  = req.user;
+        const image = req.file;
+        const { title, description, body } = req.body;
+        const articleSlug = slugify(title, {
+          replacement: '-', // replace spaces with replacement
+          remove: null, // regex to remove characters
+          lower: true, // result in lower case
+        });
         const articleData = {
-            title,
-            description,
-            slug,
-            body,
-            author,
-            image
+          title,
+          description,
+          slug: articleSlug,
+          body,
+          author: username,
+          image
         }
 
-        console.log('FILE.......', req.file);
-        console.log('USERNAME......', username);
+        console.log('POSTED DATA.....', articleData);
+        const responseImageFiltering = Util.filterUploadedImage(fileExtension, res);
+        if(responseImageFiltering) {
+          console.log('COME ON.....');
+          cloudinary.uploader.upload(req.file.path, (error, result) => {
+            if (error){
+              console.log('ERROR.......', error);
+              // return res.send(err);
+            }else {
+               console.log('file uploaded to Cloudinary', result)
+              //  res.json(image);
+            }
+          });
+            try {
+             
+                // if (result) {
+              // res.send(result);
+                // }
+                // const article = await models.Article.create({
 
-        // try {
-        //     const article = await models.Article.create({
+                // });
+                // if (article) {
+                //     Util.setSuccess(200, 'Successfully created an article', article);
+                //     Util.sendResponse(res);
+                // }
+            } catch (error) {
+                Util.setError(500, error.message);
+                Util.sendResponse(res);
+            }
+        }
+        
+        console.log('EXTENSION.......', responseImageFiltering);
 
-        //      });
-        //      if(article){
-        //          Util.setSuccess(200, 'Successfully created an article', article);
-        //          Util.sendResponse(res);
-        //      }  
-        // } catch (error) {
-        //     Util.setError(500, error.message);
-        //     Util.sendResponse(res);
-        // }
     }
 
     static async updateAnArticle(req, res) {

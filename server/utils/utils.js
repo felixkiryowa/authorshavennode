@@ -19,6 +19,16 @@ export default class Util {
         this.type = 'error';
     }
 
+    static async filterUploadedImage(ext, res) {
+          if (ext === '.png' || ext === '.jpg' || ext === '.jpeg') {
+            return true;
+          } else {
+              return res.status(400).json({
+                  message: 'You are allowed to upload only image files'
+              })
+          }
+    }
+
     static async sendResponse(res) {
         const result = {
             status: this.type,

@@ -6,17 +6,11 @@ import multer from 'multer';
 import express from 'express';
 import Util from '../../utils/utils';
 import passport from '../../../config/passport';
+import path from 'path'
 const router = express.Router();
 var upload = multer({
-    dest: '../../../uploads/',
-    fileFilter: (req, file, cb) => {
-        if (file.mimetype !== 'image/png' || file.mimetype !== 'image/jpeg') {
-            req.fileValidationError = 'File type should be a png, jpeg ';
-            return cb(new Error('File is not supported'), false);
-        } else {
-            return cb(null, true);
-        }
-    }
+    storage: multer.diskStorage({}),
+    fileSize: 1 * 1024 * 1024,
 });
 
 // @route POST /api/article/create
